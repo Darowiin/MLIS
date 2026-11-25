@@ -1,0 +1,47 @@
+# Стартовая конфигурация. Часть значений намеренно выбрана для «простейшего случая»
+# и должна быть пересмотрена студентом. Вариант задаёт метод; параметры метода,
+# препроцессинг и (при необходимости) набор признаков вы выбираете и обосновываете
+# самостоятельно в planning session. См. config/variants.yaml.
+
+variant: 0
+
+data:
+  train_path: data/UNSW_NB15_training-set.csv
+  test_path: data/UNSW_NB15_testing-set.csv
+  split_column: split
+  train_split: train
+  test_split: test
+  label_column: label
+  id_column: id
+  text_columns: [payload_preview, proto, service, state]
+  exclude_columns: [id, split, label, attack_cat, payload_preview]
+
+features:
+  # Пустой список = все числовые колонки, кроме exclude_columns.
+  include: []
+
+method:
+  name: zscore          # zscore | iqr | knn | lof | ocsvm
+  params:
+    # Пример параметров для zscore. Замените/дополните под выбранный метод и свои значения.
+    k: 3.0
+    aggregation: max_abs_z   # max_abs_z | count | euclidean
+    ddof: 0
+    min_features: 1
+    zero_variance: epsilon   # drop | zero | epsilon
+
+preprocessing:
+  missing: zero            # median | zero
+  transform: none          # none | signed_log1p
+  scaling: none            # none | standard | robust
+  fit_on: all              # по заданию допустимо только train
+
+paths:
+  models_dir: artifacts/models
+  plots_dir: artifacts/plots
+  reports_dir: artifacts/reports
+  artifacts_dir: artifacts
+
+logging:
+  level: INFO
+  file_enabled: false
